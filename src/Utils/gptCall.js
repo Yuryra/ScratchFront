@@ -1,5 +1,5 @@
 import { Configuration, OpenAIApi } from "openai";
-
+// hi there - playing with git hub
 const KEY = "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" //process.env.OPENAI_API_KEY
 console.log ("key: " + KEY)
 
