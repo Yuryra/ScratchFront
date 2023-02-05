@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+//import MaterialTable from 'material-table'; // ?? https://mui.com/material-ui/migration/migration-v4/
  
 const AiQnaList = (props) => {
   
@@ -79,6 +80,32 @@ const FmtDate = (dt) => {
 
 }
  
+// const data = [
+//   { name: "Mohammad", surname: "Faisal", birthYear: 1995 },
+//   { name: "Nayeem Raihan ", surname: "Shuvo", birthYear: 1994 },
+// ];
+
+// const columns = [
+//   { title: "Name", field: "name" },
+//   { title: "Surname", field: "surname" },
+//   { title: "Birth Year", field: "birthYear", type: "numeric" },
+// ];
+
+
+// return <MaterialTable title="Basic Table" columns={columns} data={data} />;
+
+// const columns = [
+//   { title: "Id", field: "_id" },
+//   { title: "Question", field: "name" },
+//   { title: "Answer", field: "surname" },
+//   { title: "Mood", field: "mood" },
+//   { title: "Tsr", field: "ts", type: "date" },
+// ];
+
+
+// return <MaterialTable title="History" columns={columns} data={records} />;
+
+
   return (
     <div className="columns mt-5">
       <div className="column is-half">

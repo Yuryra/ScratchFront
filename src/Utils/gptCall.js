@@ -1,7 +1,14 @@
 import { Configuration, OpenAIApi } from "openai";
-// hi there - playing with git hub
-const KEY = "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" //process.env.OPENAI_API_KEY
-console.log ("key: " + KEY)
+
+
+// a usefule link on : npm audit fix --force 
+//https://stackoverflow.com/questions/69692842/error-message-error0308010cdigital-envelope-routinesunsupported
+
+
+const kkk = process.env.REACT_APP_OPENAI_API_KEY
+
+console.log ("key: " + kkk)
+const KEY = kkk
 
 const configuration = new Configuration({
   apiKey: KEY
@@ -15,7 +22,6 @@ export  async function DoDo({question, mood}) {
 
     try {
         const completion = await openai.createCompletion({
-          //apiKey: "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"
           model: "text-davinci-003",
         //   prompt: "make the answer very optimistic to this question: '" 
         //           + question + "'", //generatePrompt(animal),
