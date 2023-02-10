@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import {ScratchBackUrl} from '../Utils/gptCall.js'
 import { Link } from "react-router-dom";
 //import MaterialTable from 'material-table'; // ?? https://mui.com/material-ui/migration/migration-v4/
  
@@ -43,7 +44,8 @@ const AiQnaList = (props) => {
 
 
   async function getRecords() {
-    const response = await axios.get("http://localhost:5000/getRecords");
+    console.log('ScratchBackUrl : ' + ScratchBackUrl)
+    const response = await axios.get(ScratchBackUrl + '/getRecords');
     const recs = response.data
 
     //const recs = await immitateGetRecords(records)
@@ -62,7 +64,7 @@ const AiQnaList = (props) => {
 
 //   const deleteUser = async (id) => {
 //     try {
-//       await axios.delete(`http://localhost:5000/users/${id}`);
+//       await axios.delete(ScratchBackUrl + /users/${id}`);
 //       getUsers();
 //     } catch (error) {
 //       console.log(error);

@@ -71,3 +71,19 @@ export  async function DoDo({question, mood}) {
       }
 
 }
+export  function scratchBackUrl() {
+  // https://learn.microsoft.com/en-us/azure/app-service/app-service-web-nodejs-best-practices-and-troubleshoot-guide
+  //https://stackoverflow.com/questions/25678419/how-to-check-if-code-is-running-on-azure-websites/25695126#25695126
+  //https://medium.com/the-node-js-collection/making-your-node-js-work-everywhere-with-environment-variables-2da8cdf6e786
+  
+  //return 'http://localhost:5000'
+
+
+  // on kudu .. /env : WEBSITE_SITE_NAME = ScratchBackApp .. Rest
+  if (false && !String.IsNullOrEmpty(process.env.GetEnvironmentVariable("WEBSITE_SITE_NAME"))) {
+    return 'http://localhost:5000'
+  } else {
+    return 'https://' + 'ScratchBackRest' + '.azurewebsites.net'
+  }
+}
+export  const ScratchBackUrl = scratchBackUrl();

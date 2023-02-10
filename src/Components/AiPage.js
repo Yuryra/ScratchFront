@@ -1,7 +1,7 @@
 import axios from "axios"
 import {useNavigate} from "react-router-dom" 
 import {useState, useEffect, useRef} from "react" 
-import {DoDo} from '../Utils/gptCall.js'
+import {DoDo, ScratchBackUrl} from '../Utils/gptCall.js'
 import AiQnaList from "./AiQnaList.js"
 import {immitateSaveRecord} from "../Utils/MiscForApp.js"
 
@@ -85,7 +85,7 @@ const AiPage = (props) => {
         try {
             const postData = {question: qq, answer:gptAnswer, mood: mood, ts : new Date()}
             console.log("AiPage.onFormSubmit: before post: " + JSON.stringify(postData));
-            const response = await axios.post(`http://localhost:5000/saveRecord`
+            const response = await axios.post(ScratchBackUrl + '/saveRecord'
                             , postData);
         
             } catch (error) {
@@ -125,7 +125,7 @@ const AiPage = (props) => {
         try {
             const postData = {filter: {}}
             console.log("...");
-            const response = await axios.post(`http://localhost:5000/deleteRecords`
+            const response = await axios.post(ScratchBackUrl + '/deleteRecords'
                             , postData);
         
             } catch (error) {
