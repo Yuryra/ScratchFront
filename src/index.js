@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import "bulma/css/bulma.min.css";
 
-
+process.env.CI = false; // chatGPT says so!\
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
