@@ -33,8 +33,9 @@ const AiPage = (props) => {
         console.log('[] UseEffect fired: prev question:' + prevQuestion)
         questionElRef.current.value = prevQuestion // -<- this is instead of value={question} crap ?
         }
-    ,[])
-
+    //,[])
+//   Line 36:6:    React Hook useEffect has a missing dependency: 'question'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+    )
 
     const goBack = async (e) => {
         e.preventDefault()
@@ -53,7 +54,7 @@ const AiPage = (props) => {
     const  onFormSubmit  = async (e) => {
         e.preventDefault()
         //setQuestion(this.value)
-        console.log('------------------\n' + 'onFormSubmit: ' )
+        console.log('------------------\n onFormSubmit: ' )
         let qq =  questionElRef.current.value
         if (qq === undefined || qq === null || qq.trim() === '') {
             alert('No Empty Questions!');
@@ -85,7 +86,8 @@ const AiPage = (props) => {
         try {
             const postData = {question: qq, answer:gptAnswer, mood: mood, ts : new Date()}
             console.log("AiPage.onFormSubmit: before post: " + JSON.stringify(postData));
-            const response = await axios.post(ScratchBackUrl + '/saveRecord'
+            //const response = 
+            await axios.post(ScratchBackUrl + '/saveRecord'
                             , postData);
         
             } catch (error) {
@@ -95,7 +97,7 @@ const AiPage = (props) => {
         //  console.log('onFormSubmit 3')
         
         console.log('handleQuestionChange: a: ' + gptAnswer)
-        setAnswer(gptAnswer + '\n' + 'answer for: - ' + qq)
+        setAnswer(gptAnswer + '\n nooooanswer for: - ' + qq)
 
         // trying to rerender the list
         setQuery({q:qq, a:gptAnswer})
@@ -125,7 +127,8 @@ const AiPage = (props) => {
         try {
             const postData = {filter: {}}
             console.log("...");
-            const response = await axios.post(ScratchBackUrl + '/deleteRecords'
+            //const response = 
+            await axios.post(ScratchBackUrl + '/deleteRecords'
                             , postData);
         
             } catch (error) {
