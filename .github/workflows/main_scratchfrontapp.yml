@@ -52,5 +52,5 @@ jobs:
         with:
           app-name: 'ScratchFrontApp'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_B73952F471DA414AB61911828D349009 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_4CB5E59ED58943499B1644863CB5F11F }}
           package: .
