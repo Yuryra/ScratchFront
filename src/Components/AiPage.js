@@ -33,9 +33,9 @@ const AiPage = (props) => {
         console.log('[] UseEffect fired: prev question:' + prevQuestion)
         questionElRef.current.value = prevQuestion // -<- this is instead of value={question} crap ?
         }
-    //,[])
-//   Line 36:6:    React Hook useEffect has a missing dependency: 'question'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
-    )
+    ,[])
+//  stupi elint == Line 36:6:    React Hook useEffect has a missing dependency: 'question'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
 
     const goBack = async (e) => {
         e.preventDefault()

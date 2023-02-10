@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {ScratchBackUrl} from '../Utils/gptCall.js'
-import { Link } from "react-router-dom";
+//import { Link } from "react-router-dom";
 //import MaterialTable from 'material-table'; // ?? https://mui.com/material-ui/migration/migration-v4/
  
 const AiQnaList = (props) => {
