@@ -83,7 +83,8 @@ export  function scratchBackUrl() {
   if (false && !String.IsNullOrEmpty(process.env.GetEnvironmentVariable("WEBSITE_SITE_NAME"))) {
     return 'http://localhost:5000'
   } else {
-    return 'https:// ScratchBackRest ...azurewebsites.net'
+    const nm = 'ScratchBackRest'
+    return 'https://' + nm + '.azurewebsites.net'
   }
 }
 export  const ScratchBackUrl = scratchBackUrl();

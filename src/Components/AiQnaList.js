@@ -44,19 +44,29 @@ const AiQnaList = (props) => {
 
 
   async function getRecords() {
-    console.log('ScratchBackUrl : ' + ScratchBackUrl)
-    const response = await axios.get(ScratchBackUrl + '/getRecords');
-    const recs = response.data
-
-    //const recs = await immitateGetRecords(records)
-
-    // resort records 
-    recs.sort((a,b)=>{
+    console.log('===> ScratchBackUrl : ' + ScratchBackUrl)
+    try {
+      const response = await axios.get(ScratchBackUrl + '/getRecords');
+ 
       
-     // return (b.ts.getTime() - a.ts.getTime());})
-      return (new Date(b.ts) - new Date(a.ts))})
-    setRecords(recs);
-    console.log('AiQnaList getRecords() finished')
+      const recs = response.data
+
+      //const recs = await immitateGetRecords(records)
+
+      // resort records 
+      recs.sort((a,b)=>{
+        
+      // return (b.ts.getTime() - a.ts.getTime());})
+        return (new Date(b.ts) - new Date(a.ts))})
+
+      setRecords(recs);
+      console.log('AiQnaList getRecords() finished')
+
+    } catch (error) {
+      console.log('===>\n' + error);
+      
+      //     
+    }
   };
 
   //getRecords().then(()=>{})
