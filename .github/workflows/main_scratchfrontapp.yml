@@ -11,6 +11,9 @@ on:
 
 jobs:
   build:
+    env:
+      CI: false
+      
     runs-on: windows-latest
 
     steps:
