@@ -4,8 +4,11 @@
 
 /* #todo
 
-* https://www.geeksforgeeks.org/create-a-responsive-navbar-using-reactjs/ 
-
+* navbar : 
+  https://www.geeksforgeeks.org/create-a-responsive-navbar-using-reactjs/ 
+* file paths:
+  https://stackoverflow.com/questions/37644265/correct-path-for-img-on-react-js
+  
 
 */
 
