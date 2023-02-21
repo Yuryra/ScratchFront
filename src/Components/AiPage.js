@@ -4,6 +4,7 @@ import {useState, useEffect, useRef} from "react"
 import {DoDo, ScratchBackUrl} from '../Utils/gptCall.js'
 import AiQnaList from "./AiQnaList.js"
 import {immitateSaveRecord} from "../Utils/MiscForApp.js"
+import "../App.css";
 
 
 
@@ -18,6 +19,8 @@ const AiPage = (props) => {
     const [question, setQuestion] = useState([])
     const [answer, setAnswer] = useState("no answer yet")
     const [query, setQuery] = useState('no query yet')
+    const [conversationId, setConversationId] = useState('Default Conversation')
+
     const [rrCount, setRrCount] = useState(0)
     const navigate = useNavigate()
 
@@ -50,6 +53,21 @@ const AiPage = (props) => {
     function delay(t) {
         return new Promise(resolve => setTimeout(resolve, t))
       }
+    const findConversationById = async (id) =>{
+
+        try {
+            const postData = {conversationId: id}
+                
+            console.log("AiPage.onFormSubmit: before post: " + JSON.stringify(postData));
+            //const response = 
+            await axios.post(ScratchBackUrl + '/findConversations'
+                            , postData);
+        
+            } catch (error) {
+                console.log("AiPage.onFormSubmit: error in post: " + JSON.stringify(error.response.data));
+            }
+
+    }
 
     const  onFormSubmit  = async (e) => {
         e.preventDefault()
@@ -84,7 +102,9 @@ const AiPage = (props) => {
         // db result right away
         // naive - let xxx = await saveRecordInner({question:qq, answer: ddd, mood: mood, ts: new Date()})
         try {
-            const postData = {question: qq, answer:gptAnswer, mood: mood, ts : new Date()}
+            const postData = {conversationId: conversationId,
+                question: qq, answer:gptAnswer, mood: mood, ts : new Date()}
+                
             console.log("AiPage.onFormSubmit: before post: " + JSON.stringify(postData));
             //const response = 
             await axios.post(ScratchBackUrl + '/saveRecord'
@@ -140,6 +160,8 @@ const AiPage = (props) => {
 
     return (
     <>
+    {/* <div style={{ color: 'blue', lineHeight : 10, padding: 20 }}> Inline Styled Component</div> */}
+    <div  className="conversationId">{conversationId}</div>
     <form onSubmit={onFormSubmit}>
         <button onClick={goBack}> goback </button>
         <button onClick={doExp}> exp </button>

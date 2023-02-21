@@ -9,6 +9,10 @@ const MainPage= () => {
         pathname: "aipage", 
         param1: "Par1" 
       };
+    const paramObjPlay = { 
+        pathname: "playPage", 
+        param1: "Par1" 
+      };
 
     return (<div className="title is-2"npm start>
         sdsadas
@@ -21,6 +25,11 @@ const MainPage= () => {
             <Link to={paramObj} aaa={paramObj} bbb='dasad'>
             press me for ai
             </Link>
+            <p>
+            <Link to={paramObjPlay} aaa={paramObjPlay} bbb='dasad'>
+            press me for 'play'
+            </Link>
+            </p>
     </div>)
 
 } 

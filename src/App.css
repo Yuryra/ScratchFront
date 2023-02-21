@@ -7,7 +7,23 @@
   pointer-events: none;
 }
 
-.container { color: lightsalmon;}
+.container { color: rgb(9, 17, 14);background-color: #c0cbe0;}
+
+
+.conversationId {
+  font-weight: 300; font-size: 50px;
+}
+
+
+/*  */
+.cnvTapeQuestionRow {
+  background-color: #dbdbdb !important;
+}
+
+.cnvTapeAnswerRow {
+  background-color: #ededed !important;
+}
+/*  */
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
@@ -38,3 +54,4 @@
     transform: rotate(360deg);
   }
 }
+

@@ -80,9 +80,9 @@ export  function scratchBackUrl() {
 
 
   // on kudu .. /env : WEBSITE_SITE_NAME = ScratchBackApp .. Rest
-  if (false && !String.IsNullOrEmpty(process.env.GetEnvironmentVariable("WEBSITE_SITE_NAME"))) {
+  if (true) { //} && !String.IsNullOrEmpty(process.env.GetEnvironmentVariable("WEBSITE_SITE_NAME"))) {
     return 'http://localhost:5000'
-  } else {
+  } else if (true) {
     const nm = 'ScratchBackRest'
     return 'https://' + nm + '.azurewebsites.net'
   }

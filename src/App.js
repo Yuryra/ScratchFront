@@ -3,6 +3,7 @@ import {BrowserRouter, Routes, Route} from "react-router-dom"
 import MainPage from "./Components/MainPage.js"
 import DbPage from "./Components/DbPage.js"
 import AiPage from "./Components/AiPage.js"
+import PlayPage from "./Components/PlayPage.js"
 
 //hi there v1
 
@@ -15,6 +16,7 @@ function App() {
           <Route path="/dbpage" element={<DbPage />}/>
           <Route path="/aipage" element={<AiPage />}/>
           <Route path="/" element={<MainPage />}/>
+          <Route path="/playPage" element={<PlayPage/>}/>
         </Routes>
       </div>
     </BrowserRouter>
