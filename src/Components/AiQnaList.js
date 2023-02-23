@@ -18,7 +18,7 @@ const AiQnaList = (props) => {
     //     records = recs
     // }
 
-
+   
 
  
   console.log('AiQnaList [re]rendering start :' + JSON.stringify(props))
@@ -73,6 +73,8 @@ const AiQnaList = (props) => {
 
       setRecords(recs);
       console.log('AiQnaList getRecords() finished')
+
+      if (props.cnvCallBack) props.cnvCallBack({records : recs})
 
     } catch (error) {
       console.log('===>\n' + error);
@@ -272,7 +274,9 @@ return (
      }}
      />;
 
+
+
  ////////////////////////////////////////////////
-  return <CnvShow records={records} />
+  return <CnvShow records={records} isText={true} />
 };
 export default AiQnaList;

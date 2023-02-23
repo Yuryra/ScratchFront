@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
-import "bulma/css/bulma.min.css";
+import App from './App.js';
+import "bulma/css/bulma.min.css"; // links etc look better
 
 // stupid advice by cht?? process.env.CI = false; // chatGPT says so!\
 

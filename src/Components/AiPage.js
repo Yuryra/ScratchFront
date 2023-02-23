@@ -5,7 +5,7 @@ import {DoDo, ScratchBackUrl} from '../Utils/gptCall.js'
 import AiQnaList from "./AiQnaList.js"
 import {immitateSaveRecord} from "../Utils/MiscForApp.js"
 import "../App.css";
-
+import {QnA_List}  from '../Logic/CnvClasses.js'
 
 
 // naive  attempt to use mongo from browser
@@ -23,6 +23,10 @@ const AiPage = (props) => {
 
     const [rrCount, setRrCount] = useState(0)
     const navigate = useNavigate()
+
+
+    // bad design :
+    const [cnvRecords, setCnvRecords] = useState(0)
 
     console.log('AiPage render ' + question)
 
@@ -134,12 +138,35 @@ const AiPage = (props) => {
         //setQuery(this.value)
         console.log('handleQueryChange')
     }
+
+    //------------------------------------------
     const doExp = async (e) => {
         e.preventDefault()
+
+        if (false) {
         await immitateSaveRecord(rrCount + 1)
         setRrCount(rrCount + 1)
-
+        } else {
+            //f('zero', {arg1 : "dsd"},'dada')
+            const lsep = "<br/>"
+            const txt = QnA_List.createFromRecords(cnvRecords).combined(lsep)
+            
+            console.log('==> QnA_List : ' + txt)
+            
+            
+            console.log(txt)
+        }
     }
+
+    const cnvCallback = function ({records}) {
+        // const records = [
+        //   {q:"hi there", a:"hello, i am machine"},
+        //   {q:"who are you?", a:"i am machine, stupid"},
+        // ]
+        setCnvRecords(records)
+ 
+      }
+    //----------------------------------------------
     const doRemove = async (e) => {
         e.preventDefault()
         await immitateSaveRecord(rrCount + 1)
@@ -157,6 +184,8 @@ const AiPage = (props) => {
         // tigger the rendering
         setRrCount(rrCount + 1)
     }
+
+
 
     return (
     <>
@@ -193,7 +222,7 @@ const AiPage = (props) => {
             {/* does not matter what's here because it is a controlled component??? {question} */}
         </textarea>
     <button onClick={doRemove}>Remove Selected</button>
-    <AiQnaList rrCount = {rrCount}/>
+    <AiQnaList rrCount = {rrCount} cnvCallBack={cnvCallback}/>
     </>
     )
 

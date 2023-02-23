@@ -11,7 +11,8 @@
   
 
 */
-
+//import * as CnvClasses from '../Utils/CnvClasses.js'
+import {QnA_List}  from '../Logic/CnvClasses.js'
 
 
 import SignUp  from "./PlayMuiSample.js"
@@ -143,6 +144,14 @@ const CnvDate = (dt) => {
 }
 
 
+export const CnvText = ({records}) => {
+  let qq = QnA_List.createFromRecords(records)
+  let txt = qq.combined()
+  //const txt = QnA_List.createFromRecords(records).combined()
+
+  return <pre>txt</pre>
+}
+
 export const CnvTape = ({records}) => {
   let imm = "C:/Windows/WinSxS/amd64_microsoft-windows-userexperience-desktop_31bf3856ad364e35_10.0.19041.2311_none_fb67996b7e84bdb3/Assets/Ninja/CategorySticker.png"
   //imm = "../../public/favicon.ico"
@@ -246,7 +255,7 @@ export const CnvTable = ({records}) => {
    ////////////////////////////////////////////////
   };
 
-export const CnvShow = ({records}) => {
+export const CnvShow = ({records}, isText=false) => {
   
   const [isTape, setIsTape] = useState(true)
   const handleToggle = (e) => {
@@ -280,11 +289,13 @@ export const CnvShow = ({records}) => {
               <span onClick={() => setSelected(0)}> Employer </span>
               <span onClick={() => setSelected(1)}> Location </span>     
           </p> */}
-
+          <CnvText records={records} />
+          {/* {(isText === true) && <CnvText records={records} />} */}
           {(isTape === true) && <CnvTape records={records} />}
           {(isTape === false) && <CnvTable records={records} />}
       </div>
   )
+  // x = (y && z)
 };
 
 
