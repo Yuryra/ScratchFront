@@ -45,7 +45,7 @@ export class QnA_List {
     static createFromRecords(records) {
         let lst = new QnA_List()
         records.forEach((record) => {
-            let unit = new QnA_Unit({question : record.q, answer : record.a})
+            let unit = new QnA_Unit({question : record.question, answer : record.answer})
             lst.add(unit)
 
         });

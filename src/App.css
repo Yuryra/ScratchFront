@@ -11,17 +11,22 @@
 
 
 .conversationId {
-  font-weight: 300; font-size: 50px;
+  font-weight: 300; font-size: 20px;
 }
 
 
 /*  */
+
 .cnvTapeQuestionRow {
   background-color: #dbdbdb !important;
 }
 
 .cnvTapeAnswerRow {
   background-color: #ededed !important;
+}
+
+.cnvDebugClass{
+  background-color: #806b6b !important;
 }
 /*  */
 

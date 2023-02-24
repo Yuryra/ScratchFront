@@ -22,6 +22,8 @@ const AiPage = (props) => {
     const [conversationId, setConversationId] = useState('Default Conversation')
 
     const [rrCount, setRrCount] = useState(0)
+
+    const [cnvDebugHtml, setCnvDebugHtml] = useState(null)
     const navigate = useNavigate()
 
 
@@ -83,6 +85,9 @@ const AiPage = (props) => {
             return;
         }
 
+        const prefice = QnA_List.createFromRecords(cnvRecords).combined('\n')
+        
+
    
         window.localStorage.setItem(AiPageQuestionStorageKey, qq)
 
@@ -96,7 +101,7 @@ const AiPage = (props) => {
         let gptAnswer = "default answer"
         let b = true
         if (b) 
-            gptAnswer = await DoDo({question:qq, mood}) // fnction will know how to detructure ..
+            gptAnswer = await DoDo({question:qq, mood:prefice + '\n' + mood}) // fnction will know how to detructure ..
         else
             // immitate getting gptAnswer as a copy of question:
             gptAnswer = await delay(1000)
@@ -146,6 +151,8 @@ const AiPage = (props) => {
         if (false) {
         await immitateSaveRecord(rrCount + 1)
         setRrCount(rrCount + 1)
+        } else if (cnvDebugHtml) {
+            setCnvDebugHtml(null)
         } else {
             //f('zero', {arg1 : "dsd"},'dada')
             const lsep = "<br/>"
@@ -153,6 +160,7 @@ const AiPage = (props) => {
             
             console.log('==> QnA_List : ' + txt)
             
+            setCnvDebugHtml(txt)
             
             console.log(txt)
         }
@@ -190,10 +198,22 @@ const AiPage = (props) => {
     return (
     <>
     {/* <div style={{ color: 'blue', lineHeight : 10, padding: 20 }}> Inline Styled Component</div> */}
-    <div  className="conversationId">{conversationId}</div>
-    <form onSubmit={onFormSubmit}>
+    <aside style={{width:"30px"}}>
+        <div style={{display:"flex"}}>
+        <button onClickXXX={goBack}> xxx </button>
+        <button onClickXXX={goBack}> yyy </button>
+        <button onClickXXX={goBack}> zzz </button>
         <button onClick={goBack}> goback </button>
         <button onClick={doExp}> exp </button>
+        <button onClick={doRemove}>Remove Selected</button>
+        </div>
+    </aside>
+    <section style={{displayXXX:"flex"}}>
+
+
+    <div  className="conversationId">{conversationId}</div>
+    <form onSubmit={onFormSubmit}>
+
         <br></br><input type="submit"/>
         <div>
             question: 
@@ -221,11 +241,32 @@ const AiPage = (props) => {
         >
             {/* does not matter what's here because it is a controlled component??? {question} */}
         </textarea>
-    <button onClick={doRemove}>Remove Selected</button>
-    <AiQnaList rrCount = {rrCount} cnvCallBack={cnvCallback}/>
+    
+
+  
+    {(cnvDebugHtml) ? 
+
+        <DebugDisplay rrCount = {rrCount} html={cnvDebugHtml} />  
+        : 
+        <AiQnaList rrCount = {rrCount} cnvCallBack={cnvCallback}/> 
+    }
+    </section>
+
+
     </>
-    )
+    );
 
 } 
+
+const DebugDisplay = (props) => {
+    const html = props.html
+    //return <div>{html}</div>
+    //https://stackoverflow.com/questions/36104302/how-do-i-convert-a-string-to-jsx
+    return (
+        <div className="Container cnvDebugClass" dangerouslySetInnerHTML={{__html: html}}></div>
+      )
+
+}
+
 
 export default AiPage;

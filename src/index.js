@@ -5,7 +5,7 @@ import "bulma/css/bulma.min.css"; // links etc look better
 
 // stupid advice by cht?? process.env.CI = false; // chatGPT says so!\
 
-alert('hi there')
+//alert('hi there')
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   //<React.StrictMode>
