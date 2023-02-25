@@ -1,7 +1,58 @@
 .App {
   text-align: center;
+  display:flex;
+  background-color: #ededed21;
+  color: brown;
+  position: absolute;
+  top:0; bottom:0; left:0; right: 0;
+  background-color: gray;
 }
 
+.sidemenu {
+  width: 140px;
+  height:400px;
+  border:1px solid blue;
+  padding:10px;
+}
+
+.side-menu-button {
+  padding:15px;
+  border:1px solid black;
+  border-radius:5px;
+  text-align:left;
+  transition: ease 0.25s all;
+}
+.side-menu-button:hover {
+  background-color: rgba(255,255,255,0.1);
+}
+
+.chat-input-textarea {
+  color:white;
+
+  background-color: #40414f;
+  width:100%;
+  border-radius: 5px;
+  border:none;
+  marginZZZ:12px;
+  outline: none;
+  box-shadow: 0 0 4px 0 rgba(0,0,0,0.5)
+
+}
+
+.chatbox{
+  flex:1;
+  border:1px solid red;
+
+}
+
+.myForm{
+  width:100%;
+  border:1px solid blue;
+}
+
+
+
+/* ----------------------------------------- */
 .App-logo {
   height: 40vmin;
   pointer-events: none;

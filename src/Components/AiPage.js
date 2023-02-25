@@ -85,7 +85,7 @@ const AiPage = (props) => {
             return;
         }
 
-        const prefice = QnA_List.createFromRecords(cnvRecords).combined('\n')
+        const prefice = '' //QnA_List.createFromRecords(cnvRecords).combined('\n')
         
 
    
@@ -95,16 +95,19 @@ const AiPage = (props) => {
         //console.log('onFormSubmit 2')
 
 
-        const mood="as if you are a thief"
+        let  mood="as if you are a thief"
             //const mood = moodEl.current.value
 
         let gptAnswer = "default answer"
         let b = true
-        if (b) 
-            gptAnswer = await DoDo({question:qq, mood:prefice + '\n' + mood}) // fnction will know how to detructure ..
-        else
+        if (b) {
+            mood = prefice + '\n' + mood
+            mood = ''
+            gptAnswer = await DoDo({question:qq, mood:mood}) // fnction will know how to detructure ..
+        } else {
             // immitate getting gptAnswer as a copy of question:
             gptAnswer = await delay(1000)
+        }
 
         //gptAnswer = qq
 
@@ -126,7 +129,7 @@ const AiPage = (props) => {
         //  console.log('onFormSubmit 3')
         
         console.log('handleQuestionChange: a: ' + gptAnswer)
-        setAnswer(gptAnswer + '\n nooooanswer for: - ' + qq)
+        setAnswer(gptAnswer)
 
         // trying to rerender the list
         setQuery({q:qq, a:gptAnswer})
@@ -196,64 +199,70 @@ const AiPage = (props) => {
 
 
     return (
-    <>
-    {/* <div style={{ color: 'blue', lineHeight : 10, padding: 20 }}> Inline Styled Component</div> */}
-    <aside style={{width:"30px"}}>
-        <div style={{display:"flex"}}>
-        <button onClickXXX={goBack}> xxx </button>
-        <button onClickXXX={goBack}> yyy </button>
-        <button onClickXXX={goBack}> zzz </button>
-        <button onClick={goBack}> goback </button>
-        <button onClick={doExp}> exp </button>
-        <button onClick={doRemove}>Remove Selected</button>
-        </div>
-    </aside>
-    <section style={{displayXXX:"flex"}}>
-
-
-    <div  className="conversationId">{conversationId}</div>
-    <form onSubmit={onFormSubmit}>
-
-        <br></br><input type="submit"/>
-        <div>
-            question: 
-            <textarea 
-            ref={questionElRef} 
-            name="questionArea" cols="50" rows="3" 
-            onChangeZZZ={handleQuestionChange} valueZZZ={question}
-            >
-                {/* does not matter what's here because it is a controlled component??? {question} */}
-            </textarea>
-
-        </div>
-        <div>
-            <textarea cols="50" rows="10" value={answer}>
-                {answer}
-            </textarea>
-        </div>
-
-    </form>
-
-    <textarea 
-
-        name="queryArea" cols="50" rows="2" 
-        onChangeZZZ={handleQueryChange} value={JSON.stringify(query)}
-        >
-            {/* does not matter what's here because it is a controlled component??? {question} */}
-        </textarea>
+    <div className="App">
     
-
-  
-    {(cnvDebugHtml) ? 
-
-        <DebugDisplay rrCount = {rrCount} html={cnvDebugHtml} />  
-        : 
-        <AiQnaList rrCount = {rrCount} cnvCallBack={cnvCallback}/> 
-    }
-    </section>
+        <aside className="sidemenu">
+      
+            <div className="side-menu-button" onClickXXX={goBack}>
+                <span>+</span>
+                 New session </div>
 
 
-    </>
+            <button onClickXXX={goBack}> yyy </button>
+            <button onClickXXX={goBack}> zzz </button>
+            <button onClick={goBack}> goback </button>
+            <button onClick={doExp}> exp </button>
+            <button onClick={doRemove}>Remove Selected</button>
+
+        </aside>
+        <section className="chatbox">
+
+
+            <div  className="conversationId">{conversationId}</div>
+            <form className="myForm" onSubmit={onFormSubmit}>
+
+                <br></br><input type="submit"/>
+                <div>
+                    question: 
+                    <textarea className="chat-input-textarea"
+                    ref={questionElRef} 
+                    name="questionArea" colsZZZ="50" rows="5" 
+                    onChangeZZZ={handleQuestionChange} valueZZZ={question}
+                    >
+                        {/* does not matter what's here because it is a controlled component??? {question} */}
+                    </textarea>
+
+                </div>
+                <div>
+                    <textarea style={{"background-color": "gray"}}
+                        className="chat-input-textarea"
+                        colsZZZ="50" rows="10" value={answer}>
+                        {answer}
+                    </textarea>
+                </div>
+
+            </form>
+
+            <textarea 
+
+                name="queryArea" cols="50" rows="2" 
+                onChangeZZZ={handleQueryChange} value={JSON.stringify(query)}
+                >
+                    {/* does not matter what's here because it is a controlled component??? {question} */}
+                </textarea>
+            
+
+        
+            {(cnvDebugHtml) ? 
+
+                <DebugDisplay rrCount = {rrCount} html={cnvDebugHtml} />  
+                : 
+                <AiQnaList rrCount = {rrCount} cnvCallBack={cnvCallback}/> 
+            }
+        </section>
+
+
+    </div>
     );
 
 } 

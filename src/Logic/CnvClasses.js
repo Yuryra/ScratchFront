@@ -24,6 +24,7 @@ export class QnA_List {
         this.dfltSuffix = dfltSuffix ?? null
         this.pJoiner = paragraphJoiner ?? '\n'
         this.lst = []
+        this.lastError = null
     }
 
     add(unit) {
@@ -44,12 +45,24 @@ export class QnA_List {
 
     static createFromRecords(records) {
         let lst = new QnA_List()
-        records.forEach((record) => {
-            let unit = new QnA_Unit({question : record.question, answer : record.answer})
-            lst.add(unit)
+        try {
+        
+            if (records.forEach === undefined) 
+                return lst
 
-        });
-        return lst
+            
+            records.forEach((record) => {
+                let unit = new QnA_Unit({question : record.question, answer : record.answer})
+                lst.add(unit)
+
+            
+
+            });
+            return lst
+        } catch(e) {
+            return e.message;
+        }
+        
     }
 }
 

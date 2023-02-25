@@ -205,6 +205,9 @@ export const CnvTape = ({records}) => {
 
 
 export const CnvTable = ({records}) => {
+//https://smartdevpreneur.com/the-ultimate-guide-to-material-ui-table-row-height/
+// https://codesandbox.io/s/material-ui-table-row-height-demo-64le3?file=/demo.js
+
 
   const columns_Table = [
     { title: "Id", field: "id", width:70 },
@@ -232,6 +235,12 @@ export const CnvTable = ({records}) => {
   
       options={{ sorting: true,
         selection: true,
+
+        rowStyle: {
+          backgroundColor: "#EEE",
+          height: "50px",
+          maxHeight: "50px"
+        }
         
        }}
        title="Conversing Table" 
