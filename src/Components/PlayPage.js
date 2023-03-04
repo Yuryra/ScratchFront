@@ -286,7 +286,8 @@ export const CnvShow = ({records}, isText=false) => {
   )
 
   return (
-    <div className="cnvToggle" style={{position:"relative"}}>
+    <div className="cnvToggle" style={{
+      position:"relative"}}>
       <img onClick={handleToggle}
         src={toggleIcon} style={{
         position: "absolute",

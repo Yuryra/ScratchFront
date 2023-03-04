@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {ScratchBackUrl} from '../Utils/gptCall.js'
+import {Get_ScratchBack_Records} from '../Utils/MiscForApp.js'
+
 import {CnvTape, CnvTable, CnvShow} from './PlayPage.js'
 
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
@@ -54,23 +56,24 @@ const AiQnaList = (props) => {
   async function getRecords() {
     console.log('===> ScratchBackUrl : ' + ScratchBackUrl)
     try {
-      const response = await axios.get(ScratchBackUrl + '/getRecords');
+      // const response = await axios.get(ScratchBackUrl + '/getRecords');
  
       
-      const recs = response.data
+      // const recs = response.data
 
-      //const recs = await immitateGetRecords(records)
+      // //const recs = await immitateGetRecords(records)
 
-      // resort records 
-      recs.sort((a,b)=>{
+      // // resort records 
+      // recs.sort((a,b)=>{
         
-      // return (b.ts.getTime() - a.ts.getTime());})
-        return (new Date(b.ts) - new Date(a.ts))})
+      // // return (b.ts.getTime() - a.ts.getTime());}) .. the oldest first
+      //   return (new Date(a.ts) - new Date(b.ts))})
 
-      for (let i = 0; i< recs.length; i++) {
-        recs[i]["id"] = i
-      }
+      // for (let i = 0; i< recs.length; i++) {
+      //   recs[i]["id"] = i
+      // }
 
+      const recs = await Get_ScratchBack_Records(null)
       setRecords(recs);
       console.log('AiQnaList getRecords() finished')
 

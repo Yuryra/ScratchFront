@@ -3,10 +3,10 @@ import {useNavigate} from "react-router-dom"
 import {useState, useEffect, useRef} from "react" 
 import {DoDo, ScratchBackUrl} from '../Utils/gptCall.js'
 import AiQnaList from "./AiQnaList.js"
-import {immitateSaveRecord} from "../Utils/MiscForApp.js"
+import {immitateSaveRecord, Get_ScratchBack_Records} from "../Utils/MiscForApp.js"
 import "../App.css";
-import {QnA_List}  from '../Logic/CnvClasses.js'
-
+import {QnA_List, QnA_Unit}  from '../Logic/CnvClasses.js'
+import {CnvScroll} from "./CnvScroll.js"
 
 // naive  attempt to use mongo from browser
 // import dbStartConection from "../DbStuff/DbStart.js"
@@ -26,9 +26,13 @@ const AiPage = (props) => {
     const [cnvDebugHtml, setCnvDebugHtml] = useState(null)
     const navigate = useNavigate()
 
+    const [noPreface, setNoPreface] = useState(false)
 
     // bad design :
     const [cnvRecords, setCnvRecords] = useState(0)
+    // const [cnvNewUnit, setCnvNewUnit] = useState(null)
+    // const [cnvUnits, setCnvUnits] = useState(null)
+
 
     console.log('AiPage render ' + question)
 
@@ -85,10 +89,8 @@ const AiPage = (props) => {
             return;
         }
 
-        const prefice = '' //QnA_List.createFromRecords(cnvRecords).combined('\n')
-        
 
-   
+      
         window.localStorage.setItem(AiPageQuestionStorageKey, qq)
 
         //setQuestion(qq)
@@ -101,9 +103,24 @@ const AiPage = (props) => {
         let gptAnswer = "default answer"
         let b = true
         if (b) {
-            mood = prefice + '\n' + mood
-            mood = ''
-            gptAnswer = await DoDo({question:qq, mood:mood}) // fnction will know how to detructure ..
+            const qnal = QnA_List.createFromRecords(cnvRecords)
+            const preface = (noPreface ? '' 
+              : qnal.combined('\n'))
+
+            const expandedQuestion = preface + '\n' + qq + '\n' + mood
+            // - to immitate 'context of the conversation'
+            // see design note [question is just the last in context] 
+
+            // gptAnswer = await DoDo_DaVinci({question:expandedQuestion
+            //     , mood:mood}) // fnction will know how to detructure ..
+
+            let units = qnal.getUnits()
+            gptAnswer = await DoDo({ qnaUnits: units
+                , question:qq
+                , mood:mood})
+
+                const xxx = 1
+
         } else {
             // immitate getting gptAnswer as a copy of question:
             gptAnswer = await delay(1000)
@@ -122,11 +139,15 @@ const AiPage = (props) => {
             await axios.post(ScratchBackUrl + '/saveRecord'
                             , postData);
         
-            } catch (error) {
-                console.log("AiPage.onFormSubmit: error in post: " + JSON.stringify(error.response.data));
-            }
+        } catch (error) {
+            console.log("AiPage.onFormSubmit: error in post: " + JSON.stringify(error.response.data));
+        }
 
         //  console.log('onFormSubmit 3')
+
+
+        
+
         
         console.log('handleQuestionChange: a: ' + gptAnswer)
         setAnswer(gptAnswer)
@@ -175,6 +196,10 @@ const AiPage = (props) => {
         //   {q:"who are you?", a:"i am machine, stupid"},
         // ]
         setCnvRecords(records)
+
+        //         // // Update cnv units so that they will be redisplayed
+        //         // const cnvNewUnit = setCnvNewUnit(new QnA_Unit({q:qq, a:gptAnswer}))
+        // cnvUnits.add(cnvNewUnit)
  
       }
     //----------------------------------------------
@@ -188,10 +213,16 @@ const AiPage = (props) => {
             //const response = 
             await axios.post(ScratchBackUrl + '/deleteRecords'
                             , postData);
-        
+            // 
+            
+            const recs = Get_ScratchBack_Records(null)
+            setCnvRecords(recs)
+
             } catch (error) {
+                setCnvDebugHtml(JSON.stringify(error.response.data))
                 console.log("AiPage.onFormSubmit: error in post: " + JSON.stringify(error.response.data));
             }
+
         // tigger the rendering
         setRrCount(rrCount + 1)
     }
@@ -219,6 +250,7 @@ const AiPage = (props) => {
 
 
             <div  className="conversationId">{conversationId}</div>
+            <CnvScroll records={cnvRecords} />
             <form className="myForm" onSubmit={onFormSubmit}>
 
                 <br></br><input type="submit"/>
@@ -252,13 +284,14 @@ const AiPage = (props) => {
                 </textarea>
             
 
-        
+        if (false) {} else 
             {(cnvDebugHtml) ? 
 
-                <DebugDisplay rrCount = {rrCount} html={cnvDebugHtml} />  
+                <DebugDisplay rrCount = {rrCount} html={cnvDebugHtml} records={cnvRecords}/>  
                 : 
                 <AiQnaList rrCount = {rrCount} cnvCallBack={cnvCallback}/> 
             }
+        
         </section>
 
 
@@ -269,6 +302,28 @@ const AiPage = (props) => {
 
 const DebugDisplay = (props) => {
     const html = props.html
+    const cnvRecords = props.records
+    const lsep = "<br/>"
+    const qnal = QnA_List.createFromRecords(cnvRecords)
+
+   
+    let pars = []
+    const units = qnal.getUnits()
+    for (let i = 0; i < units.length; i++) {
+        const u = units[i]
+        let paragraph = u.combined()
+        pars.push(<div><div>{u.q}</div><div>{u.a}</div></div>)
+    }
+    return (
+        <div className="cnvDebugClass">
+            {pars.map(dd=>dd)}
+        </div>
+         
+    )
+
+    qnal.combined(lsep)
+
+    console.log("==> got cnvRecords")
     //return <div>{html}</div>
     //https://stackoverflow.com/questions/36104302/how-do-i-convert-a-string-to-jsx
     return (

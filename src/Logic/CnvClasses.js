@@ -1,10 +1,13 @@
 // please rewrite this piece of code in typescript
-class QnA_Unit {
-    constructor({question = null,answer = null, prefix = null, suffix = null}) {
+export class QnA_Unit {
+    constructor({question = null,answer = null, prefix = null, suffix = null, 
+            question_author = null, answer_author = null}) {
         this.q = question;
         this.a = answer
         this.prefix = prefix
         this.suffix = suffix
+        this.qAuth = question_author // design note [question is just the last in context] actuall the question is just the last in the context?
+        this.aAuth = answer_author
     }
 
     combined(sep) {
@@ -13,7 +16,7 @@ class QnA_Unit {
         if (this.prefix) ingredients.push(this.prefix)
         if (this.q) ingredients.push(this.q)
         if (this.a) ingredients.push(this.a)
-        if (this.prefix) ingredients.push(this.prefix)
+        if (this.suffix) ingredients.push(this.suffix)
         return ingredients.join(sep)
     }
 }
@@ -41,6 +44,14 @@ export class QnA_List {
             paragraphs.push(paragraph)
         }
         return paragraphs.join(lsep)
+    }
+
+    // unitAt(i) {
+    //     return this.lst[i]
+    // }
+
+    getUnits() {
+        return this.lst
     }
 
     static createFromRecords(records) {
