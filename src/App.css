@@ -105,6 +105,26 @@
   overflow-y: scroll;
   text-align: left;
 }
+/* */
+.AiPage_ModalParams_Outer{
+  position:fixed; left:0; right:0; top:0; bottom:0;
+  background-color: rgba(0,0,0,0.3);
+  display: flex;
+  align-items:center;
+  justify-content:center;
+
+}
+.AiPage_ModalParams_Inner{
+  width:90%;
+  height:90%;
+  padding-top:100px; 
+  
+  border-color: 2px solid blueviolet;
+
+  background-color: white;
+  
+
+}
 /*  */
 
 @media (prefers-reduced-motion: no-preference) {

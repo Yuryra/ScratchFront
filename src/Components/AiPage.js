@@ -1,5 +1,5 @@
 import axios from "axios"
-import {useNavigate} from "react-router-dom" 
+import {useNavigate, useHistory, Link} from "react-router-dom" 
 import {useState, useEffect, useRef} from "react" 
 import {DoDo, ScratchBackUrl} from '../Utils/gptCall.js'
 import AiQnaList from "./AiQnaList.js"
@@ -7,10 +7,24 @@ import {immitateSaveRecord, Get_ScratchBack_Records} from "../Utils/MiscForApp.j
 import "../App.css";
 import {QnA_List, QnA_Unit}  from '../Logic/CnvClasses.js'
 import {CnvScroll} from "./CnvScroll.js"
+import AiPage_ModalParams from "./AiPage_ModalParams.js"
 
+// - works only on server node.js .. import { readFileSync, writeFileSync } from 'fs' //
+import MiscParamsDefault from "./MiscParams.json"
+
+// alternative technique:
+import {Apd,AiPageDefaults} from "./AiPageDefaults.js"
+
+////////////////////// end of imports //////////////////////
+const MiscParamsLocalStorageKey="AiPageMiscParams"
+
+console.log("==> loading aipage.js")
+console.log("==> AiPageDefaults: " + JSON.stringify(AiPageDefaults));
+console.log("==> Apd: " + JSON.stringify(Apd()));
 // naive  attempt to use mongo from browser
 // import dbStartConection from "../DbStuff/DbStart.js"
 // import { saveRecordInner} from "../DbStuff/DbComms.js"
+
 
 const AiPageQuestionStorageKey='AiPageQuestionStorageKey'
 
@@ -33,10 +47,17 @@ const AiPage = (props) => {
     // const [cnvNewUnit, setCnvNewUnit] = useState(null)
     // const [cnvUnits, setCnvUnits] = useState(null)
 
+    const [miscParams, setMiscParams] = useState(null)
+    const [miscParamsDialogOn, setMiscParamsDialogOn] = useState(false)
+
+    const [jsonData, setJsonData] = useState(null);
+
 
     console.log('AiPage render ' + question)
 
     const questionElRef = useRef()
+
+    const jsonData_Fpath = "./MiscParams.json"
 
     useEffect(()=>{
         //way_JustIniting = dbStartConection 
@@ -45,8 +66,50 @@ const AiPage = (props) => {
         setQuestion(prevQuestion)
         console.log('[] UseEffect fired: prev question:' + prevQuestion)
         questionElRef.current.value = prevQuestion // -<- this is instead of value={question} crap ?
+        
+        // when component is mounted :
+        // const data = readFileSync(jsonData_Fpath);
+        // setJsonData(JSON.parse(data));
+        console.log("==> Apd: " + JSON.stringify(Apd()));
+        let jd = window.localStorage.getItem(MiscParamsLocalStorageKey)
+        try{
+            jd=JSON.parse(jd)
+        } catch {
+            jd = null
+        }
+        
+        if (!jd) jd = Apd() //AiPageDefaults //MiscParamsDefault
+        setJsonData(jd)
+        
+        // Return a cleanup function to be run when the component is unmounted
+        // thanks chatGPT for reminding me that :)!
+        return () => {
+            // This code will run when the component is unmounted
+
+            /* //    design note ["closure" of jsonData happens only once on the mounting]
+                // it is better to write to localstorage EVERY time the [jsonData] changes
+                console.log('==> jsonDat on return useEffect(..[]) ' + JSON.stringify(jsonData));
+                window.localStorage.setItem(MiscParamsLocalStorageKey,JSON.stringify(jsonData)) 
+            */
+
+            console.log('Component is unmounted.');
+            // Do any cleanup work here, such as removing event listeners or clearing intervals
+            };
+
         }
     ,[])
+
+    useEffect(()=>{
+        if (jsonData != null) {
+            // see design note ["closure" of jsonData happens only once on the mounting]
+            console.log('==> jsonDat on useEffect(..[jsonData]) ' + JSON.stringify(jsonData));
+            window.localStorage.setItem(MiscParamsLocalStorageKey,JSON.stringify(jsonData))
+        }} 
+        ,[jsonData])
+    //
+
+//////////////////////////////////////////////////////////////////////////
+
 //  stupi elint == Line 36:6:    React Hook useEffect has a missing dependency: 'question'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
 
 
@@ -227,7 +290,17 @@ const AiPage = (props) => {
         setRrCount(rrCount + 1)
     }
 
+//////////////////////
 
+    
+//////////////////////
+
+const miscParams_CallBack = (jData) => {
+    //alert(data)
+    setJsonData(jData) //{ ...jsonData, [key]: value });
+    // and what the hell - update the whole local storage on every call?
+    //window.localStorage.setItem(MiscParamsLocalStorageKey,JSON.stringify(jData))
+}
 
     return (
     <div className="App">
@@ -244,6 +317,19 @@ const AiPage = (props) => {
             <button onClick={goBack}> goback </button>
             <button onClick={doExp}> exp </button>
             <button onClick={doRemove}>Remove Selected</button>
+
+            <Link to={{pathname:"../ParamsPage", par0:"dasdads"}} aaa={123} bbb='dasad'>
+                    Change parameters.
+            </Link>
+
+       
+            <button  onClick={e => {
+                setMiscParamsDialogOn(true)
+            }} > Change Parameters Modal </button>
+            <AiPage_ModalParams onClose={(arg)=>{setMiscParamsDialogOn(false)}} show={miscParamsDialogOn} 
+                callBack={miscParams_CallBack} 
+                jsonData={jsonData}
+            />
 
         </aside>
         <section className="chatbox">

@@ -4,6 +4,8 @@ import MainPage from "./Components/MainPage.js"
 import DbPage from "./Components/DbPage.js"
 import AiPage from "./Components/AiPage.js"
 import PlayPage from "./Components/PlayPage.js"
+import ParamsPage from "./Components/ParamsPage.js"
+
 
 //hi there v1
 
@@ -17,6 +19,7 @@ function App() {
           <Route path="/aipage" element={<AiPage />}/>
           <Route path="/" element={<MainPage />}/>
           <Route path="/playPage" element={<PlayPage/>}/>
+          <Route path="/paramsPage" element={<ParamsPage/>}/>
         </Routes>
       </div>
     </BrowserRouter>
