@@ -78,7 +78,8 @@ const AiPage = (props) => {
             jd = null
         }
         
-        if (!jd) jd = Apd() //AiPageDefaults //MiscParamsDefault
+        const defaultMP = Apd()  
+        if (!defaultMP.Override && !jd) jd = Apd() //AiPageDefaults //MiscParamsDefault
         setJsonData(jd)
         
         // Return a cleanup function to be run when the component is unmounted
@@ -108,6 +109,12 @@ const AiPage = (props) => {
         ,[jsonData])
     //
 
+    const miscParams_CallBack = (jData) => {
+        // see useEffect(..[jsonData]) and  design note ["closure" of jsonData happens only once on the mounting]
+        setJsonData(jData) //{ ...jsonData, [key]: value });
+        // and what the hell - update the whole local storage on every call?
+        //window.localStorage.setItem(MiscParamsLocalStorageKey,JSON.stringify(jData))
+    }
 //////////////////////////////////////////////////////////////////////////
 
 //  stupi elint == Line 36:6:    React Hook useEffect has a missing dependency: 'question'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
@@ -283,7 +290,7 @@ const AiPage = (props) => {
 
             } catch (error) {
                 setCnvDebugHtml(JSON.stringify(error.response.data))
-                console.log("AiPage.onFormSubmit: error in post: " + JSON.stringify(error.response.data));
+                console.log("AiPage.doRemove: error in post: " + JSON.stringify(error.response.data));
             }
 
         // tigger the rendering
@@ -295,12 +302,7 @@ const AiPage = (props) => {
     
 //////////////////////
 
-const miscParams_CallBack = (jData) => {
-    //alert(data)
-    setJsonData(jData) //{ ...jsonData, [key]: value });
-    // and what the hell - update the whole local storage on every call?
-    //window.localStorage.setItem(MiscParamsLocalStorageKey,JSON.stringify(jData))
-}
+
 
     return (
     <div className="App">
@@ -336,7 +338,10 @@ const miscParams_CallBack = (jData) => {
 
 
             <div  className="conversationId">{conversationId}</div>
+
+            // the area to display current conversation
             <CnvScroll records={cnvRecords} />
+            
             <form className="myForm" onSubmit={onFormSubmit}>
 
                 <br></br><input type="submit"/>
