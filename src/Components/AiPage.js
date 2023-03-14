@@ -14,6 +14,7 @@ import MiscParamsDefault from "./MiscParams.json"
 
 // alternative technique:
 import {Apd,AiPageDefaults} from "./AiPageDefaults.js"
+import { getNativeSelectUtilityClasses } from "@mui/material"
 
 ////////////////////// end of imports //////////////////////
 const MiscParamsLocalStorageKey="AiPageMiscParams"
@@ -43,7 +44,7 @@ const AiPage = (props) => {
     const [noPreface, setNoPreface] = useState(false)
 
     // bad design :
-    const [cnvRecords, setCnvRecords] = useState(0)
+    const [cnvRecords, setCnvRecords] = useState(null)
     // const [cnvNewUnit, setCnvNewUnit] = useState(null)
     // const [cnvUnits, setCnvUnits] = useState(null)
 
@@ -77,6 +78,18 @@ const AiPage = (props) => {
         } catch {
             jd = null
         }
+
+        
+        //https://javascript.info/promise-error-handling
+        // initiate getting records from mongo
+        const p = Get_ScratchBack_Records(null)
+        p.then((recs) => {
+            setCnvRecords(recs);
+        }). catch((err) => {
+            console.log(err)
+        });
+
+        
         
         const defaultMP = Apd()  
         if (!defaultMP.Override && !jd) jd = Apd() //AiPageDefaults //MiscParamsDefault
@@ -166,14 +179,20 @@ const AiPage = (props) => {
         //setQuestion(qq)
         //console.log('onFormSubmit 2')
 
+        // cnvRecords ===> QnA_List
+        const qnal = QnA_List.createFromRecords(cnvRecords)
 
+
+
+
+ 
         let  mood="as if you are a thief"
             //const mood = moodEl.current.value
 
         let gptAnswer = "default answer"
         let b = true
         if (b) {
-            const qnal = QnA_List.createFromRecords(cnvRecords)
+            
             const preface = (noPreface ? '' 
               : qnal.combined('\n'))
 
@@ -201,14 +220,21 @@ const AiPage = (props) => {
         // db result right away
         // naive - let xxx = await saveRecordInner({question:qq, answer: ddd, mood: mood, ts: new Date()})
         try {
-            const postData = {conversationId: conversationId,
-                question: qq, answer:gptAnswer, mood: mood, ts : new Date()}
+            const newUnit = new QnA_Unit({question: qq,answer: gptAnswer, ts: new Date()})
+            const postData = {conversationId: conversationId, ...newUnit}
+            // const postData = {conversationId: conversationId,
+            //     question: qq, answer:gptAnswer, mood: mood, ts : new Date()}
                 
             console.log("AiPage.onFormSubmit: before post: " + JSON.stringify(postData));
             //const response = 
             await axios.post(ScratchBackUrl + '/saveRecord'
                             , postData);
-        
+            
+            // cnvRecords <===> QnA_List
+            qnal.add(newUnit)
+            const recs = qnal.generateRecords()
+            setCnvRecords(recs)
+
         } catch (error) {
             console.log("AiPage.onFormSubmit: error in post: " + JSON.stringify(error.response.data));
         }
@@ -266,10 +292,6 @@ const AiPage = (props) => {
         //   {q:"who are you?", a:"i am machine, stupid"},
         // ]
         setCnvRecords(records)
-
-        //         // // Update cnv units so that they will be redisplayed
-        //         // const cnvNewUnit = setCnvNewUnit(new QnA_Unit({q:qq, a:gptAnswer}))
-        // cnvUnits.add(cnvNewUnit)
  
       }
     //----------------------------------------------
@@ -285,8 +307,9 @@ const AiPage = (props) => {
                             , postData);
             // 
             
-            const recs = Get_ScratchBack_Records(null)
-            setCnvRecords(recs)
+            Get_ScratchBack_Records(null).then((recs)=>{setCnvRecords(recs)})
+            
+            
 
             } catch (error) {
                 setCnvDebugHtml(JSON.stringify(error.response.data))
@@ -380,7 +403,7 @@ const AiPage = (props) => {
 
                 <DebugDisplay rrCount = {rrCount} html={cnvDebugHtml} records={cnvRecords}/>  
                 : 
-                <AiQnaList rrCount = {rrCount} cnvCallBack={cnvCallback}/> 
+                <AiQnaList rrCount = {rrCount} records={cnvRecords} cnvCallBack={cnvCallback}/> 
             }
         
         </section>

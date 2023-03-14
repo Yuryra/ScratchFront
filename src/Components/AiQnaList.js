@@ -12,16 +12,9 @@ import MaterialTable, { Column } from '@material-table/core';
 
 //import { Link } from "react-router-dom";
 
-const AiQnaList = (props) => {
+const AiQnaList = ({records},props) => {
   
-    const [records, setRecords] = useState([]);
-    // let records = []
-    // function setRecords(recs) {
-    //     records = recs
-    // }
-
-   
-
+  // no need i get the from the caller  const [records, setRecords] = useState([]);
  
   console.log('AiQnaList [re]rendering start :' + JSON.stringify(props))
 
@@ -31,11 +24,11 @@ const AiQnaList = (props) => {
 
   useEffect( () => {
     console.log('AiQnaList useEffect() before getRecords :' + JSON.stringify(props))
-    getRecords();
-    console.log('AiQnaList useEffect() after getRecords, ' + records.length)
+    /////////////////////// !!! no need - i get them from props now .. getRecords();
+    //console.log('AiQnaList useEffect() after getRecords, ' + (records.length)
   },[props.rrCount]);
  
-  async function immitateGetRecords (prevRecords)
+  /* async function immitateGetRecords (prevRecords)
   {
     
     let recs = []
@@ -56,22 +49,6 @@ const AiQnaList = (props) => {
   async function getRecords() {
     console.log('===> ScratchBackUrl : ' + ScratchBackUrl)
     try {
-      // const response = await axios.get(ScratchBackUrl + '/getRecords');
- 
-      
-      // const recs = response.data
-
-      // //const recs = await immitateGetRecords(records)
-
-      // // resort records 
-      // recs.sort((a,b)=>{
-        
-      // // return (b.ts.getTime() - a.ts.getTime());}) .. the oldest first
-      //   return (new Date(a.ts) - new Date(b.ts))})
-
-      // for (let i = 0; i< recs.length; i++) {
-      //   recs[i]["id"] = i
-      // }
 
       const recs = await Get_ScratchBack_Records(null)
       setRecords(recs);
@@ -84,7 +61,7 @@ const AiQnaList = (props) => {
       
       //     
     }
-  };
+  }; */
 
   //getRecords().then(()=>{})
  

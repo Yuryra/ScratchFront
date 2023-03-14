@@ -152,10 +152,19 @@ export const CnvText = ({records}) => {
   return <pre>txt</pre>
 }
 
+// export const CnvTape = ({records}) => {
+
+//   const x = records.map((record, index)=>{});
+//   return null;
+// }
+
 export const CnvTape = ({records}) => {
   let imm = "C:/Windows/WinSxS/amd64_microsoft-windows-userexperience-desktop_31bf3856ad364e35_10.0.19041.2311_none_fb67996b7e84bdb3/Assets/Ninja/CategorySticker.png"
-  //imm = "../../public/favicon.ico"
+   //imm = "../../public/favicon.ico"
 
+  
+  if (!Array.isArray(records)) return  (<></>)
+  
   //return (<img src={"../../public/favicon.ico"}/> )
   return (
     // <div className="cnvTape" style={{position:"relative"}}>
@@ -179,7 +188,7 @@ export const CnvTape = ({records}) => {
             </tr>
           </thead>
           <tbody>
-            {records.map((record, index) => (
+            {records.map((record, index) => {
               <>
                 <tr key={record._id} className="cnvTapeQuestionRow">
                   <td>{index + 1}</td>
@@ -196,7 +205,7 @@ export const CnvTape = ({records}) => {
 
                 </tr>
               </>
-            ))}
+          })}
           </tbody>
         </table>
     // </div>

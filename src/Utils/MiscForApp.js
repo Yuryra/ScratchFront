@@ -13,6 +13,20 @@ export async function immitateSaveRecord(cnt){
   }
 }
 
+// async function Get_ScratchBack_Records_Sync() {
+//   console.log('===> ScratchBackUrl : ' + ScratchBackUrl)
+//   try {
+
+//     const recs = await Get_ScratchBack_Records(null)
+    
+
+//   } catch (error) {
+//     console.log('===>\n' + error);
+    
+//     //     
+//   }
+// };
+
 export async function Get_ScratchBack_Records(conversationId) {
   console.log('===> ScratchBackUrl : ' + ScratchBackUrl)
   // try {

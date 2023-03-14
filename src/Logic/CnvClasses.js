@@ -9,8 +9,43 @@ export class QnA_Unit {
         this.suffix = suffix
         this.qAuth = question_author // design note [question is just the last in context] actuall the question is just the last in the context?
         this.aAuth = answer_author
-        this.isPrivateQa = isPrivateQa
+        this.private = isPrivateQa
+        this.ts = null
     }
+    
+    static Record_To_Unit(record) {
+        const unit = new QnA_Unit({})
+        
+            unit.q = record.question
+            unit.a = record.answer
+
+            unit.prefix = record.prefix
+            unit.suffix = record.suffix
+            unit.qAuth = record.qAuth
+            unit.aAuth = record.aAuth
+            unit.private = record.private
+            unit.ts = record.ts
+
+        return unit
+    }
+
+    static Record_From_Unit(unit,conversationId=null) {
+        const record = {
+            conversationId : conversationId
+            , question: unit.q
+            , answer: unit.a
+
+            , prefix: unit.prefix
+            , suffix: unit.suffix
+            , qAuth: unit.qAuth
+            , aAuth: unit.aAuth
+            , private: unit.private
+            , ts: unit.ts
+        }
+        return record
+    }
+
+
 
     combined(insep) {
         insep = insep ?? '\n'
@@ -27,7 +62,7 @@ export class QnA_Unit {
         const youAreAuthor = (this.qAuth == author) 
         // if you are not the author hide your suffixes and prefixes
         let ingredients = []
-        if (this.isPrivateQa && youAreAuthor) {
+        if (this.private && youAreAuthor) {
             return ''
         }
 
@@ -86,26 +121,44 @@ export class QnA_List {
         return this.lst
     }
 
+
+    generateRecords(qnal) {
+        let units = qnal.getUnits()
+        if (units) {
+            const records = units.map((unit, index)=>{ const record=QnA_Unit.Record_From_Unit(unit); return record} )
+            return records
+        } else {
+            return null
+        }
+
+    }
+
     static createFromRecords(records) {
-        let lst = new QnA_List()
+        
+
+        let qnal = new QnA_List()
+        if (! Array.isArray(records)) return qnal
+
         try {
         
             if (records.forEach === undefined) 
-                return lst
+                return qnal
 
             
             records.forEach((record) => {
-                let unit = new QnA_Unit({question : record.question, answer : record.answer})
-                lst.add(unit)
+                let unit = QnA_Unit.Record_To_Unit(record) //new QnA_Unit({question : record.question, answer : record.answer})
+                qnal.add(unit)
 
             
 
             });
-            return lst
+            return qnal
         } catch(e) {
             return e.message;
         }
         
     }
+
+    
 }
 
